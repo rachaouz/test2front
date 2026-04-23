@@ -1,5 +1,3 @@
-// src/pages/Home.jsx
-
 import Button from "../components/Button";
 import GlowingSphere from "../components/glowingsphere";
 import { LOGO_URL, NAV_ITEMS } from "../constants";
@@ -50,7 +48,7 @@ export default function Home({ onNavigate }) {
             className="h-14 w-auto drop-shadow-[0_0_14px_rgba(0,212,255,0.6)]"
           />
           <span className="font-display text-[1.3rem] font-bold tracking-[0.2em] text-accent drop-shadow-[0_0_20px_rgba(0,212,255,0.5)]">
-            SOCILIS
+            SOCILIS 
             <span className="text-[#7aa3c0] text-[0.65em] ml-2 tracking-[0.1em]">// SOC AI</span>
           </span>
         </div>

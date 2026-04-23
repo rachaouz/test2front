@@ -9,17 +9,14 @@ import { LOGO_URL } from "../constants";
 import { useAuth } from "../context/AuthContext";
 
 function useAuthForm(login, onNavigate) {
-  const [mode,     setMode]     = useState("login");
   const [email,    setEmail]    = useState("");
   const [password, setPassword] = useState("");
-  const [confirm,  setConfirm]  = useState("");
   const [error,    setError]    = useState("");
   const [loading,  setLoading]  = useState(false);
 
   const validate = () => {
-    if (!email || !/\S+@\S+\.\S+/.test(email))       return "Enter a valid email address.";
-    if (!password || password.length < 6)             return "Password must be at least 6 characters.";
-    if (mode === "signup" && password !== confirm)    return "Passwords do not match.";
+    if (!email || !/\S+@\S+\.\S+/.test(email)) return "Enter a valid email address.";
+    if (!password || password.length < 6)       return "Password must be at least 6 characters.";
     return null;
   };
 
@@ -38,7 +35,6 @@ function useAuthForm(login, onNavigate) {
     //     body: JSON.stringify({ email, password }),
     //   });
     //   const userFromBackend = await response.json();
-    //   // userFromBackend contient au minimum : { role, email, ... }
     //   login(userFromBackend);
     //   onNavigate("chat");
     //
@@ -47,33 +43,24 @@ function useAuthForm(login, onNavigate) {
     // ─────────────────────────────────────────────────────────────────────
     setTimeout(() => {
       setLoading(false);
-
-      // Simulation : admin si email contient "admin", sinon user standard.
-      // À REMPLACER par la vraie réponse du backend.
       const simulatedUser = {
         email,
         role: email.toLowerCase().includes("admin") ? 0 : 1,
         name: email.split("@")[0],
       };
-
-      login(simulatedUser);   // ← persist dans AuthContext + localStorage
+      login(simulatedUser);
       onNavigate("chat");
     }, 1800);
   };
 
-  const switchMode = (m) => {
-    setMode(m); setError("");
-    setEmail(""); setPassword(""); setConfirm("");
-  };
-
-  return { mode, email, setEmail, password, setPassword, confirm, setConfirm, error, loading, handleSubmit, switchMode };
+  return { email, setEmail, password, setPassword, error, loading, handleSubmit };
 }
 
 export default function Auth({ onNavigate }) {
-  const { login } = useAuth();    // ← récupération de login() depuis le context
+  const { login } = useAuth();
   const {
-    mode, email, setEmail, password, setPassword,
-    confirm, setConfirm, error, loading, handleSubmit, switchMode,
+    email, setEmail, password, setPassword,
+    error, loading, handleSubmit,
   } = useAuthForm(login, onNavigate);
 
   return (
@@ -115,8 +102,11 @@ export default function Auth({ onNavigate }) {
             alt="Socilis"
             className="h-14 w-auto mb-2 drop-shadow-[0_0_16px_rgba(0,212,255,0.6)]"
           />
-          <div className="font-display text-[1.8rem] font-black tracking-[0.25em] text-accent drop-shadow-[0_0_30px_rgba(0,212,255,0.6)]">
-            SOCILIS
+          <div
+            className="font-display font-black tracking-[0.25em] drop-shadow-[0_0_30px_rgba(0,212,255,0.6)]"
+            style={{ fontSize: "1.8rem" }}
+          >
+            <span style={{ color: "#ffffff" }}>SOC</span><span style={{ color: "#00e676" }}>ILIS</span>
           </div>
         </div>
 
@@ -124,24 +114,12 @@ export default function Auth({ onNavigate }) {
           // Secure Access Portal
         </div>
 
-        {/* Tabs */}
-        <div className="flex mb-8 border border-[rgba(0,212,255,0.15)] bg-[rgba(0,0,0,0.3)]">
-          {["login", "signup"].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => switchMode(tab)}
-              className={`
-                flex-1 py-[0.65rem] text-center font-display text-[0.65rem]
-                tracking-[0.15em] border-none cursor-pointer transition-all duration-200
-                ${mode === tab
-                  ? "bg-[rgba(0,212,255,0.1)] text-accent shadow-[0_0_12px_rgba(0,212,255,0.15)]"
-                  : "bg-transparent text-[#7aa3c0]"
-                }
-              `}
-            >
-              {tab === "login" ? "LOGIN" : "SIGN UP"}
-            </button>
-          ))}
+        {/* LOGIN label (no tabs) */}
+        <div
+          className="flex items-center justify-center mb-8 py-[0.65rem] border border-[rgba(0,230,118,0.2)] bg-[rgba(0,230,118,0.06)]"
+          style={{ fontFamily: "monospace", fontSize: "0.65rem", letterSpacing: "0.15em", color: "#00e676" }}
+        >
+          LOGIN
         </div>
 
         {/* Error */}
@@ -167,23 +145,9 @@ export default function Auth({ onNavigate }) {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
         />
-        {mode === "signup" && (
-          <Input
-            label="Confirm Password"
-            type="password"
-            value={confirm}
-            onChange={(e) => setConfirm(e.target.value)}
-            placeholder="••••••••"
-          />
-        )}
 
         <Button variant="submit" onClick={handleSubmit} disabled={loading}>
-          {loading
-            ? "AUTHENTICATING..."
-            : mode === "login"
-            ? "INITIATE SESSION"
-            : "CREATE ACCOUNT"
-          }
+          {loading ? "AUTHENTICATING..." : "INITIATE SESSION"}
         </Button>
 
         {/* Hint pour les tests */}
@@ -195,7 +159,7 @@ export default function Auth({ onNavigate }) {
           onClick={() => onNavigate("home")}
           className="block w-full text-center mt-4 text-[0.78rem] text-[#7aa3c0] tracking-[0.1em] bg-transparent border-none cursor-pointer transition-colors duration-200 hover:text-accent font-body"
         >
-          ← Return to <span className="text-accent2">Socilis</span>
+          ← Return to <span style={{ color: "#00e676" }}>Socilis</span>
         </button>
       </div>
     </div>

@@ -36,7 +36,7 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
             display: "flex", alignItems: "center", gap: "10px",
           }}>
             <img
-              src="/logo socilis.webp"
+              src="//logo socilis.webp"
               alt="SOCILIS"
               style={{ width: "32px", height: "32px", objectFit: "contain" }}
             />
