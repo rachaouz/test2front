@@ -1,22 +1,23 @@
 import { useState, useRef, useEffect } from "react";
-
 import ChatSidebar     from "../components/chat/ChatSidebar";
 import ChatTopBar      from "../components/chat/ChatTopBar";
 import ChatInput       from "../components/chat/ChatInput";
 import MessageBubble   from "../components/chat/MessageBubble";
 import TypingIndicator from "../components/chat/TypingIndicator";
 import SettingsModal   from "../components/chat/SettingsModal";
-import { t }           from "../components/chat/chatTheme";
+import { t }           from "../components/chat/ChatTheme";
 import { MODELS }      from "../components/chat/ModelSelector";
 
-const INIT_MSG = {
-  id: 1, role: "bot",
-  content: "Système SOCILIS initialisé. Je suis votre assistant Threat Intelligence. Soumettez un IOC (Hash, IP, URL, Domaine ou CVE) pour analyse.",
-  timestamp: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
-};
+function makeInitMsg() {
+  return {
+    id: 1, role: "bot",
+    content: "Système SOCILIS initialisé. Je suis votre assistant Threat Intelligence. Soumettez un IOC (Hash, IP, URL, Domaine ou CVE) pour analyse.",
+    timestamp: new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }),
+  };
+}
 
 export default function ChatbotPage() {
-  const [messages,      setMessages]      = useState([INIT_MSG]);
+  const [messages,      setMessages]      = useState([makeInitMsg()]);
   const [input,         setInput]         = useState("");
   const [loading,       setLoading]       = useState(false);
   const [sidebarOpen,   setSidebarOpen]   = useState(true);
@@ -26,7 +27,6 @@ export default function ChatbotPage() {
   const [activeIOC,     setActiveIOC]     = useState(null);
   const [selectedModel, setSelectedModel] = useState(MODELS[0].id);
   const bottomRef = useRef();
-
   const th = t(darkMode);
 
   useEffect(() => {
@@ -73,42 +73,51 @@ export default function ChatbotPage() {
     setInput(`[${type}] `);
   };
 
+  const handleNewChat = () => {
+    setMessages([makeInitMsg()]);
+    setSelectedChat(null);
+    setInput("");
+    setActiveIOC(null);
+    setLoading(false);
+  };
+
   return (
     <div style={{
       display: "flex", height: "100vh",
       background: th.bg,
-      fontFamily: "'Courier New', monospace",
+      fontFamily: "'JetBrains Mono', 'Fira Code', monospace",
       color: th.text,
       overflow: "hidden",
     }}>
+      <div style={{
+        position: "fixed", inset: 0, pointerEvents: "none", zIndex: 0,
+        backgroundImage: darkMode
+          ? `linear-gradient(rgba(0,168,255,0.025) 1px, transparent 1px),
+             linear-gradient(90deg, rgba(0,168,255,0.025) 1px, transparent 1px)`
+          : "none",
+        backgroundSize: "40px 40px",
+      }} />
+
       {settingsOpen && (
-        <SettingsModal
-          onClose={() => setSettingsOpen(false)}
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
-        />
+        <SettingsModal onClose={() => setSettingsOpen(false)} darkMode={darkMode} setDarkMode={setDarkMode} />
       )}
 
       <ChatSidebar
-        open={sidebarOpen}
-        darkMode={darkMode}
-        selectedChat={selectedChat}
-        onSelectChat={setSelectedChat}
-        onNewChat={() => { setMessages([INIT_MSG]); setSelectedChat(null); }}
+        open={sidebarOpen} darkMode={darkMode}
+        selectedChat={selectedChat} onSelectChat={setSelectedChat}
+        onNewChat={handleNewChat}
       />
 
-      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden" }}>
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", overflow: "hidden", position: "relative", zIndex: 1 }}>
         <ChatTopBar
-          darkMode={darkMode}
-          sidebarOpen={sidebarOpen}
+          darkMode={darkMode} sidebarOpen={sidebarOpen}
           onToggleSidebar={() => setSidebarOpen(v => !v)}
           onOpenSettings={() => setSettingsOpen(true)}
-          activeIOC={activeIOC}
-          onSelectIOC={handleSelectIOC}
+          activeIOC={activeIOC} onSelectIOC={handleSelectIOC}
         />
 
         <div style={{
-          flex: 1, overflowY: "auto", padding: "20px",
+          flex: 1, overflowY: "auto", padding: "20px 24px",
           scrollbarWidth: "thin",
           scrollbarColor: `${th.scrollThumb} transparent`,
         }}>
@@ -120,11 +129,8 @@ export default function ChatbotPage() {
         </div>
 
         <ChatInput
-          darkMode={darkMode}
-          input={input}
-          loading={loading}
-          selectedModel={selectedModel}
-          onModelChange={setSelectedModel}
+          darkMode={darkMode} input={input} loading={loading}
+          selectedModel={selectedModel} onModelChange={setSelectedModel}
           onInputChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && sendMessage()}
           onSend={sendMessage}
@@ -134,13 +140,13 @@ export default function ChatbotPage() {
       <style>{`
         @keyframes fadeInUp {
           from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0);    }
+          to   { opacity: 1; transform: translateY(0); }
         }
         @keyframes typingDot {
           0%, 100% { opacity: 0.3; transform: scale(0.8); }
           50%       { opacity: 1;   transform: scale(1.2); }
         }
-        ::-webkit-scrollbar       { width: 4px; }
+        ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: ${th.scrollThumb}; border-radius: 2px; }
       `}</style>

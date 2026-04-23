@@ -60,7 +60,7 @@ export default function SplashPage() {
           animation: phase === "text" ? "spinRing 6s linear infinite reverse" : "none",
         }} />
         <img
-          src="/logo_socilis.webp"
+          src="public\logo socilis.webp"
           alt="SOCILIS"
           style={{
             width: "160px", height: "160px", objectFit: "contain",
@@ -80,8 +80,8 @@ export default function SplashPage() {
           fontSize: "42px", fontWeight: "900", letterSpacing: "12px", color: "#ffffff",
           textShadow: "0 0 20px rgba(0,200,255,0.5)",
         }}>
-          <span style={{ color: "#fff" }}>SOCI</span>
-          <span style={{ color: "#00c8ff" }}>LIS</span>
+          <span style={{ color: "#fff" }}>SOC</span>
+          <span style={{ color: "#42a367" }}>ILIS</span>
         </div>
         <div style={{
           fontSize: "11px", letterSpacing: "6px", color: "#00c8ff", marginTop: "8px", opacity: 0.8,

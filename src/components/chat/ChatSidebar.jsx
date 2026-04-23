@@ -34,17 +34,17 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
               style={{ width: "32px", height: "32px", objectFit: "contain" }}
             />
             <div>
-              <div style={{ fontWeight: "700", fontSize: "14px", letterSpacing: "2px" }}>
-                <span style={{ color: th.text }}>SOCI</span>
-                <span style={{ color: th.accent }}>LIS</span>
+              <div style={{ fontWeight: "700", fontSize: "14px", letterSpacing: "2px", fontFamily: "'JetBrains Mono', monospace" }}>
+                <span style={{ color: th.text }}>SOC</span>
+                <span style={{ color: "#00c850" }}>ILIS</span>
               </div>
-              <div style={{ color: th.textMuted, fontSize: "9px", letterSpacing: "2px" }}>
+              <div style={{ color: th.textMuted, fontSize: "9px", letterSpacing: "2px", fontFamily: "'JetBrains Mono', monospace" }}>
                 THREAT INTELLIGENCE
               </div>
             </div>
           </div>
 
-          {/* New chat */}
+          {/* New analysis button */}
           <div style={{ padding: "12px" }}>
             <button
               onClick={onNewChat}
@@ -54,9 +54,11 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
                 border: `1px dashed ${th.borderActive}`,
                 borderRadius: "6px",
                 color: th.accent, fontSize: "11px", letterSpacing: "2px",
-                cursor: "pointer", fontFamily: "'Courier New', monospace",
+                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
                 transition: "all 0.2s",
               }}
+              onMouseEnter={e => e.currentTarget.style.background = th.accentSubtle}
+              onMouseLeave={e => e.currentTarget.style.background = "transparent"}
             >
               + NOUVELLE ANALYSE
             </button>
@@ -67,6 +69,7 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
             <div style={{
               fontSize: "9px", color: th.textFaint,
               letterSpacing: "3px", padding: "8px",
+              fontFamily: "'JetBrains Mono', monospace",
             }}>
               HISTORIQUE
             </div>
@@ -83,15 +86,28 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
                     : "1px solid transparent",
                   transition: "all 0.2s",
                 }}
+                onMouseEnter={e => {
+                  if (selectedChat !== item.id)
+                    e.currentTarget.style.background = th.surfaceHover;
+                }}
+                onMouseLeave={e => {
+                  if (selectedChat !== item.id)
+                    e.currentTarget.style.background = "transparent";
+                }}
               >
                 <div style={{
                   fontSize: "11px", color: th.text, marginBottom: "3px",
                   overflow: "hidden", whiteSpace: "nowrap", textOverflow: "ellipsis",
+                  fontFamily: "'JetBrains Mono', monospace",
                 }}>
                   {item.title}
                 </div>
-                <div style={{ fontSize: "10px", color: th.textMuted }}>{item.preview}</div>
-                <div style={{ fontSize: "9px", color: th.textFaint, marginTop: "2px" }}>{item.date}</div>
+                <div style={{ fontSize: "10px", color: th.textMuted, fontFamily: "'JetBrains Mono', monospace" }}>
+                  {item.preview}
+                </div>
+                <div style={{ fontSize: "9px", color: th.textFaint, marginTop: "2px", fontFamily: "'JetBrains Mono', monospace" }}>
+                  {item.date}
+                </div>
               </div>
             ))}
           </div>

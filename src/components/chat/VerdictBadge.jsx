@@ -1,17 +1,18 @@
-export default function VerdictBadge({ verdict }) {
+export default function VerdictBadge() { return null; }{
   const colors = {
-    malicious:  { bg: "rgba(255,50,50,0.15)",  border: "#ff3232", text: "#ff6464", label: "⚠ MALICIEUX" },
-    clean:      { bg: "rgba(0,255,120,0.15)",  border: "#00e070", text: "#00e070", label: "✓ PROPRE"    },
-    suspicious: { bg: "rgba(255,165,0,0.15)",  border: "#ffa500", text: "#ffa500", label: "⚡ SUSPECT"  },
+    malicious:  { bg: "rgba(248,113,113,0.1)",  border: "#f87171", text: "#fca5a5", label: "⚠ MALICIEUX" },
+    clean:      { bg: "rgba(74,222,128,0.1)",   border: "#4ade80", text: "#86efac", label: "✓ PROPRE"    },
+    suspicious: { bg: "rgba(251,146,60,0.1)",   border: "#fb923c", text: "#fdba74", label: "⚡ SUSPECT"  },
+    critical:   { bg: "rgba(239,68,68,0.12)",   border: "#ef4444", text: "#fca5a5", label: "🔴 CRITIQUE" },
   };
   const c = colors[verdict] || colors.suspicious;
   return (
     <span style={{
-      padding: "2px 10px", borderRadius: "4px",
-      background: c.bg, border: `1px solid ${c.border}`,
-      color: c.text, fontSize: "11px", fontWeight: "700", letterSpacing: "2px",
-    }}>
-      {c.label}
-    </span>
+      display: "inline-flex", alignItems: "center", gap: "4px",
+      padding: "3px 10px", borderRadius: "4px",
+      background: c.bg, border: `1px solid ${c.border}`, color: c.text,
+      fontSize: "9px", fontWeight: "700", letterSpacing: "2px",
+      fontFamily: "'JetBrains Mono',monospace", whiteSpace: "nowrap",
+    }}>{c.label}</span>
   );
 }
