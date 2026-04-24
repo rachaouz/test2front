@@ -1,5 +1,4 @@
-export const LOGO_URL = "public\logo socilis.webp";
-
+export const LOGO_URL = "/logo socilis.webp";
 export const MOBILIS_LOGO_URL = "/Mobilis_Logo.svg.png";
 
 export const NAV_ITEMS = [

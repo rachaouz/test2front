@@ -81,7 +81,7 @@ export default function SplashPage() {
           textShadow: "0 0 20px rgba(0,200,255,0.5)",
         }}>
           <span style={{ color: "#fff" }}>SOC</span>
-          <span style={{ color: "#42a367" }}>ILIS</span>
+          <span style={{ color: "#7FD832" }}>ILIS</span>
         </div>
         <div style={{
           fontSize: "11px", letterSpacing: "6px", color: "#00c8ff", marginTop: "8px", opacity: 0.8,

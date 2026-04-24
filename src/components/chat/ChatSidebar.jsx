@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { t } from "./ChatTheme";
 
 const MOCK_HISTORY = [
@@ -12,6 +13,7 @@ const MOCK_HISTORY = [
 export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat, onNewChat }) {
   const th = t(darkMode);
   const [search, setSearch] = useState("");
+  const navigate = useNavigate();
 
   const filtered = MOCK_HISTORY.filter(item =>
     item.title.toLowerCase().includes(search.toLowerCase()) ||
@@ -43,7 +45,7 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
             <div>
               <div style={{ fontWeight: "700", fontSize: "14px", letterSpacing: "2px", fontFamily: "'JetBrains Mono', monospace" }}>
                 <span style={{ color: th.text }}>SOC</span>
-                <span style={{ color: "#00c850" }}>ILIS</span>
+                <span style={{ color: "#7FD832" }}>ILIS</span>
               </div>
               <div style={{ color: th.textMuted, fontSize: "9px", letterSpacing: "2px", fontFamily: "'JetBrains Mono', monospace" }}>
                 THREAT INTELLIGENCE
@@ -52,25 +54,41 @@ export default function ChatSidebar({ open, darkMode, selectedChat, onSelectChat
           </div>
 
           {/* New analysis */}
-          <div style={{ padding: "12px" }}>
-            <button
-              onClick={onNewChat}
-              style={{
-                width: "100%", padding: "8px",
-                background: "transparent",
-                border: `1px dashed ${th.borderActive}`,
-                borderRadius: "6px",
-                color: th.accent, fontSize: "11px", letterSpacing: "2px",
-                cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = th.accentSubtle}
-              onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-            >
-              + NOUVELLE ANALYSE
-            </button>
-          </div>
-
+<div style={{ padding: "12px", display: "flex", flexDirection: "column", gap: "6px" }}>
+  <button
+    onClick={onNewChat}
+    style={{
+      width: "100%", padding: "8px",
+      background: "transparent",
+      border: `1px dashed ${th.borderActive}`,
+      borderRadius: "6px",
+      color: th.accent, fontSize: "11px", letterSpacing: "2px",
+      cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+      transition: "all 0.2s",
+    }}
+    onMouseEnter={e => e.currentTarget.style.background = th.accentSubtle}
+    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+  >
+    + NOUVELLE ANALYSE
+  </button>
+  <button
+    onClick={() => navigate("/dashboard")}
+    style={{
+      width: "100%", padding: "8px",
+      background: "transparent",
+      border: "1px solid rgba(34,197,94,0.35)",
+      borderRadius: "6px",
+      color: "#22c55e", fontSize: "11px", letterSpacing: "2px",
+      cursor: "pointer", fontFamily: "'JetBrains Mono', monospace",
+      transition: "all 0.2s",
+      display: "flex", alignItems: "center", justifyContent: "center", gap: "6px",
+    }}
+    onMouseEnter={e => e.currentTarget.style.background = "rgba(34,197,94,0.07)"}
+    onMouseLeave={e => e.currentTarget.style.background = "transparent"}
+  >
+    ◈ DASHBOARD
+  </button>
+</div>
           {/* Search bar */}
           <div style={{ padding: "0 12px 10px" }}>
             <div style={{
